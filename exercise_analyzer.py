@@ -112,6 +112,8 @@ point_num = 17 # There are 17 points in 1 person
 # For sp(shoulder-press)
 sp_count = 0
 sp_count_tf = True
+sp_hand_diff = 0
+sp_hand_diff_count = 0
 
 ##########
 
@@ -171,12 +173,21 @@ for i in range(0, video_frame_number):
                 if person_conf_multi[people_i][point_i][0] + person_conf_multi[people_i][point_i][1] != 0: # If coordinates of point is (0, 0) == meaningless data
                     draw.ellipse(ellipse_set(person_conf_multi, people_i, point_i), fill=point_color)
             left_hand_y = int(person_conf_multi[people_i][10][1])
+            right_hand_y = int(person_conf_multi[people_i][9][1])
+            left_shoulder_y = int(person_conf_multi[people_i][6][1])
+            right_shoulder_y = int(person_conf_multi[people_i][5][1])
             head_top_y = int(person_conf_multi[people_i][0][1])
+
+            ## Calculate sp_hand_diff_sum
+            sp_hand_diff = sp_hand_diff + abs(left_hand_y - right_hand_y) * 2 / ((left_shoulder_y + right_shoulder_y) - (left_hand_y + right_hand_y))
+
+            ## Count sp_count with sp_count_tf
             if left_hand_y > head_top_y: # Left hand on below of head
                 sp_count_tf = False
             else:
                 if sp_count_tf == False: # If left hand on below of head in just before frame, and now it's on above of head -> You do sp!
                     sp_count = sp_count + 1
+                    sp_hand_diff_count = sp_hand_diff / sp_count
                 sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
@@ -195,6 +206,12 @@ for i in range(0, video_frame_number):
     draw.text((0, 54), 'Count: ' + str(sp_count), (0,0,0), font=font)
     print('Count: ' + str(sp_count))
 
+    draw.text((0, 72), 'sp_hand_diff: ' + str(sp_hand_diff), (0,0,0), font=font)
+    print('sp_hand_diff: ' + str(sp_hand_diff))
+
+    draw.text((0, 90), 'sp_hand_diff_count: ' + str(sp_hand_diff_count), (0,0,0), font=font)
+    print('sp_hand_diff_count: ' + str(sp_hand_diff_count))
+    
     image_img_numpy = np.asarray(image_img)
 
     pose_frame_list.append(image_img_numpy)
