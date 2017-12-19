@@ -56,6 +56,7 @@ parser = ap.ArgumentParser()
 parser.add_argument('-f', "--videoFile", help="Path to Video File")
 parser.add_argument('-w', "--videoWidth", help="Width of Output Video")
 parser.add_argument('-o', "--videoType", help="Extension of Output Video")
+parser.add_argument('-e', "--exersizeType", help="Type of Exersize")
 
 args = vars(parser.parse_args())
 
@@ -83,6 +84,12 @@ else:
     video_type = "mp4"
 print("Output video type: " + video_type)
 
+if args["exersizeType"] is not None:
+    exersize_type = args["exersizeType"]
+else:
+    # print("You have to input exersizeType name")
+    # sys.exit(1)
+
 ##########
 ## Define some functions to mark at image
 
@@ -99,6 +106,12 @@ pose_frame_list = []
 point_r = 3 # radius of points
 point_min = 14 # threshold of points - If there are more than point_min points in person, we define he/she is REAL PERSON
 point_num = 17 # There are 17 points in 1 person
+
+##########
+
+# For sp(shoulder-press)
+sp_count = 0
+sp_count_tf = False
 
 ##########
 
@@ -157,14 +170,30 @@ for i in range(0, video_frame_number):
             for point_i in range(0, point_num):
                 if person_conf_multi[people_i][point_i][0] + person_conf_multi[people_i][point_i][1] != 0: # If coordinates of point is (0, 0) == meaningless data
                     draw.ellipse(ellipse_set(person_conf_multi, people_i, point_i), fill=point_color)
-                    people_x.append(person_conf_multi[people_i][point_i][0])
-                    people_y.append(person_conf_multi[people_i][point_i][1])
+            left_hand_y = int(person_conf_multi[people_i][10][1])
+            head_top_y = int(person_conf_multi[people_i][0][1])
+            if left_hand_y > head_top_y: # Left hand on below of head
+                sp_count_tf = False
+            else:
+                if sp_count_tf == False: # If left hand on below of head in just before frame, and now it's on above of head -> You do sp!
+                    sp_count = sp_count + 1
+                sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
-    draw.text((0, 18), 'Total time required: ' + str(round(time.time() - time_start, 1)) + 'sec', (0,0,0), font=font)
-
     print('Frame: ' + str(i) + "/" + str(video_frame_number))
+
+    draw.text((0, 18), 'Total time required: ' + str(round(time.time() - time_start, 1)) + 'sec', (0,0,0), font=font)
     print('Time required: ' + str(round(time.time() - time_start, 1)) + 'sec')
+
+    if sp_count_tf == False:
+        draw.text((0, 36), 'Below', (0,0,0), font=font)
+        print('Below')
+    else:
+        draw.text((0, 36), 'Above', (0,0,0), font=font)
+        print('Above')
+
+    draw.text((0, 54), 'Count: ' + str(sp_count), (0,0,0), font=font)
+    print('Count: ' + str(sp_count))
 
     image_img_numpy = np.asarray(image_img)
 
