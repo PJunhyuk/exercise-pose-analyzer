@@ -113,7 +113,8 @@ point_num = 17 # There are 17 points in 1 person
 sp_count = 0
 sp_count_tf = True
 sp_hand_diff = 0
-sp_hand_diff_count = 0
+sp_hand_diff_justbefore = 0
+sp_hand_diff_this = 0
 
 ##########
 
@@ -187,7 +188,8 @@ for i in range(0, video_frame_number):
             else:
                 if sp_count_tf == False: # If left hand on below of head in just before frame, and now it's on above of head -> You do sp!
                     sp_count = sp_count + 1
-                    sp_hand_diff_count = sp_hand_diff / sp_count
+                    sp_hand_diff_this = sp_hand_diff - sp_hand_diff_justbefore
+                    sp_hand_diff_justbefore = sp_hand_diff
                 sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
@@ -209,9 +211,9 @@ for i in range(0, video_frame_number):
     draw.text((0, 72), 'sp_hand_diff: ' + str(sp_hand_diff), (0,0,0), font=font)
     print('sp_hand_diff: ' + str(sp_hand_diff))
 
-    draw.text((0, 90), 'sp_hand_diff_count: ' + str(sp_hand_diff_count), (0,0,0), font=font)
-    print('sp_hand_diff_count: ' + str(sp_hand_diff_count))
-    
+    draw.text((0, 90), 'sp_hand_diff_this: ' + str(sp_hand_diff_this), (0,0,0), font=font)
+    print('sp_hand_diff_this: ' + str(sp_hand_diff_this))
+
     image_img_numpy = np.asarray(image_img)
 
     pose_frame_list.append(image_img_numpy)
