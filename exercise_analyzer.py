@@ -115,6 +115,7 @@ sp_count_tf = True
 sp_hand_diff = 0
 sp_hand_diff_justbefore = 0
 sp_hand_diff_this = 0
+sp_hand_diff_tf = True
 
 ##########
 
@@ -181,6 +182,9 @@ for i in range(0, video_frame_number):
 
             ## Calculate sp_hand_diff_sum
             sp_hand_diff = sp_hand_diff + abs(left_hand_y - right_hand_y) * 2 / ((left_shoulder_y + right_shoulder_y) - (left_hand_y + right_hand_y))
+            sp_hand_diff_this = sp_hand_diff - sp_hand_diff_justbefore
+            if sp_hand_diff_this > 10:
+                sp_hand_diff_tf = False
 
             ## Count sp_count with sp_count_tf
             if left_hand_y > head_top_y: # Left hand on below of head
@@ -188,8 +192,8 @@ for i in range(0, video_frame_number):
             else:
                 if sp_count_tf == False: # If left hand on below of head in just before frame, and now it's on above of head -> You do sp!
                     sp_count = sp_count + 1
-                    sp_hand_diff_this = sp_hand_diff - sp_hand_diff_justbefore
                     sp_hand_diff_justbefore = sp_hand_diff
+                    sp_hand_diff_tf = True
                 sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
@@ -213,6 +217,10 @@ for i in range(0, video_frame_number):
 
     draw.text((0, 90), 'sp_hand_diff_this: ' + str(sp_hand_diff_this), (0,0,0), font=font)
     print('sp_hand_diff_this: ' + str(sp_hand_diff_this))
+
+    if sp_hand_diff_tf == False:
+        draw.text((0, 108), 'sp_hand_diff ERROR', (255,0,0), font=font)
+        print('sp_hand_diff ERROR')
 
     image_img_numpy = np.asarray(image_img)
 
