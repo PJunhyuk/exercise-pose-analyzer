@@ -112,10 +112,16 @@ point_num = 17 # There are 17 points in 1 person
 # For sp(shoulder-press)
 sp_count = 0
 sp_count_tf = True
+
 sp_hand_diff = 0
 sp_hand_diff_justbefore = 0
 sp_hand_diff_this = 0
 sp_hand_diff_tf = True
+
+sp_shoulder_diff = 0
+sp_shoulder_diff_justbefore = 0
+sp_shoulder_diff_this = 0
+sp_shoulder_tf = False
 
 ##########
 
@@ -174,17 +180,29 @@ for i in range(0, video_frame_number):
             for point_i in range(0, point_num):
                 if person_conf_multi[people_i][point_i][0] + person_conf_multi[people_i][point_i][1] != 0: # If coordinates of point is (0, 0) == meaningless data
                     draw.ellipse(ellipse_set(person_conf_multi, people_i, point_i), fill=point_color)
+
+            left_hand_x = int(person_conf_multi[people_i][10][0])
             left_hand_y = int(person_conf_multi[people_i][10][1])
+
             right_hand_y = int(person_conf_multi[people_i][9][1])
+
+            left_shoulder_x = int(person_conf_multi[people_i][6][0])
             left_shoulder_y = int(person_conf_multi[people_i][6][1])
+
+            right_shoulder_x = int(person_conf_multi[people_i][5][0])
             right_shoulder_y = int(person_conf_multi[people_i][5][1])
+
             head_top_y = int(person_conf_multi[people_i][0][1])
 
-            ## Calculate sp_hand_diff_sum
+            ## Calculate sp_hand_diff
             sp_hand_diff = sp_hand_diff + abs(left_hand_y - right_hand_y) * 2 / ((left_shoulder_y + right_shoulder_y) - (left_hand_y + right_hand_y))
             sp_hand_diff_this = sp_hand_diff - sp_hand_diff_justbefore
             if sp_hand_diff_this > 10:
                 sp_hand_diff_tf = False
+
+            ## Calculate sp_shoulder_diff
+            sp_shoulder_diff = sp_shoulder_diff + abs(left_shoulder_x - left_hand_x) / abs(right_shoulder_x - left_shoulder_x)
+            sp_shoulder_diff_this = sp_shoulder_diff - sp_shoulder_diff_justbefore
 
             ## Count sp_count with sp_count_tf
             if left_hand_y > head_top_y: # Left hand on below of head
@@ -221,6 +239,15 @@ for i in range(0, video_frame_number):
     if sp_hand_diff_tf == False:
         draw.text((0, 108), 'sp_hand_diff ERROR', (255,0,0), font=font)
         print('sp_hand_diff ERROR')
+    else:
+        draw.text((0, 108), 'sp_hand_diff GOOD', (0,255,0), font=font)
+        print('sp_hand_diff GOOD')
+
+    draw.text((0, 126), 'sp_shoulder_diff: ' + str(sp_shoulder_diff), (0,0,0), font=font)
+    print('sp_shoulder_diff: ' + str(sp_shoulder_diff))
+
+    draw.text((0, 144), 'sp_shoulder_diff_this: ' + str(sp_shoulder_diff_this), (0,0,0), font=font)
+    print('sp_shoulder_diff_this: ' + str(sp_shoulder_diff_this))
 
     image_img_numpy = np.asarray(image_img)
 
