@@ -119,8 +119,7 @@ sp_hand_diff_this = 0
 sp_hand_diff_tf = True
 
 sp_shoulder_diff = 0
-sp_shoulder_diff_justbefore = 0
-sp_shoulder_diff_this = 0
+sp_shoulder_diff_min = 10000
 sp_shoulder_tf = False
 
 ##########
@@ -201,8 +200,9 @@ for i in range(0, video_frame_number):
                 sp_hand_diff_tf = False
 
             ## Calculate sp_shoulder_diff
-            sp_shoulder_diff = sp_shoulder_diff + abs(left_shoulder_x - left_hand_x) / abs(right_shoulder_x - left_shoulder_x)
-            sp_shoulder_diff_this = sp_shoulder_diff - sp_shoulder_diff_justbefore
+            sp_shoulder_diff = abs(left_shoulder_x - left_hand_x) / abs(right_shoulder_x - left_shoulder_x)
+            if sp_shoulder_diff < sp_shoulder_diff_min:
+                sp_shoulder_diff_min = sp_shoulder_diff
 
             ## Count sp_count with sp_count_tf
             if left_hand_y > head_top_y: # Left hand on below of head
@@ -212,6 +212,7 @@ for i in range(0, video_frame_number):
                     sp_count = sp_count + 1
                     sp_hand_diff_justbefore = sp_hand_diff
                     sp_hand_diff_tf = True
+                    sp_shoulder_diff_min = 10000
                 sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
@@ -246,8 +247,8 @@ for i in range(0, video_frame_number):
     draw.text((0, 126), 'sp_shoulder_diff: ' + str(sp_shoulder_diff), (0,0,0), font=font)
     print('sp_shoulder_diff: ' + str(sp_shoulder_diff))
 
-    draw.text((0, 144), 'sp_shoulder_diff_this: ' + str(sp_shoulder_diff_this), (0,0,0), font=font)
-    print('sp_shoulder_diff_this: ' + str(sp_shoulder_diff_this))
+    draw.text((0, 144), 'sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min), (0,0,0), font=font)
+    print('sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min))
 
     image_img_numpy = np.asarray(image_img)
 
