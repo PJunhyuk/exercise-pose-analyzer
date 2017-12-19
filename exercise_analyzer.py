@@ -111,7 +111,7 @@ point_num = 17 # There are 17 points in 1 person
 
 # For sp(shoulder-press)
 sp_count = 0
-sp_count_tf = False
+sp_count_tf = True
 
 ##########
 
