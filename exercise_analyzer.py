@@ -87,7 +87,7 @@ print("Output video type: " + video_type)
 if args["exersizeType"] is not None:
     exersize_type = args["exersizeType"]
 else:
-    # print("You have to input exersizeType name")
+    print("You have to input exersizeType name")
     # sys.exit(1)
 
 ##########
