@@ -1,9 +1,5 @@
 #!/bin/sh
 
-wget "http://parkjunhyuk.com/dataset/test_video_01.mov"
-wget "http://parkjunhyuk.com/dataset/test_video_01f.mov"
-wget "http://parkjunhyuk.com/dataset/test_video_02f.mov"
-wget "http://parkjunhyuk.com/dataset/test_video_03f.mov"
-wget "http://parkjunhyuk.com/dataset/test_video_03f.mp4"
-wget "http://parkjunhyuk.com/dataset/test_video_03.mov"
-wget "http://parkjunhyuk.com/dataset/test_video_03_01.mp4"
+wget "http://flovill.com/dataset/shoulder_press_1.mp4"
+wget "http://flovill.com/dataset/shoulder_press_2.mp4"
+wget "http://flovill.com/dataset/shoulder_press_3.mp4"
