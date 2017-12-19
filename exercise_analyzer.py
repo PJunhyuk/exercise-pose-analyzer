@@ -203,6 +203,8 @@ for i in range(0, video_frame_number):
             sp_shoulder_diff = abs(left_shoulder_x - left_hand_x) / abs(right_shoulder_x - left_shoulder_x)
             if sp_shoulder_diff < sp_shoulder_diff_min:
                 sp_shoulder_diff_min = sp_shoulder_diff
+            if sp_shoulder_diff_min < 0.30:
+                sp_shoulder_diff_tf = True
 
             ## Count sp_count with sp_count_tf
             if left_hand_y > head_top_y: # Left hand on below of head
@@ -213,6 +215,7 @@ for i in range(0, video_frame_number):
                     sp_hand_diff_justbefore = sp_hand_diff
                     sp_hand_diff_tf = True
                     sp_shoulder_diff_min = 10000
+                    sp_shoulder_diff_tf = False
                 sp_count_tf = True
 
     draw.text((0, 0), 'Frame: ' + str(i) + '/' + str(video_frame_number), (0,0,0), font=font)
@@ -249,6 +252,13 @@ for i in range(0, video_frame_number):
 
     draw.text((0, 144), 'sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min), (0,0,0), font=font)
     print('sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min))
+
+    if sp_shoulder_diff_tf == False:
+        draw.text((0, 162), 'sp_shoulder_diff ERROR', (255,0,0), font=font)
+        print('sp_hand_diff ERROR')
+    else:
+        draw.text((0, 162), 'sp_shoulder_diff GOOD', (0,255,0), font=font)
+        print('sp_hand_diff GOOD')
 
     image_img_numpy = np.asarray(image_img)
 
