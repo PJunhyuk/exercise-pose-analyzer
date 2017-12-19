@@ -120,7 +120,7 @@ sp_hand_diff_tf = True
 
 sp_shoulder_diff = 0
 sp_shoulder_diff_min = 10000
-sp_shoulder_tf = False
+sp_shoulder_diff_tf = False
 
 ##########
 
