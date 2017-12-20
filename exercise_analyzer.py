@@ -84,8 +84,12 @@ else:
     video_type = "mp4"
 print("Output video type: " + video_type)
 
+sp_tf = False # Is it shoulder-press?
+
 if args["exersizeType"] is not None:
     exersize_type = args["exersizeType"]
+    if exersize_type == 'sp':
+        sp_tf = True
 else:
     print("You have to input exersizeType name")
     # sys.exit(1)
@@ -224,41 +228,42 @@ for i in range(0, video_frame_number):
     draw.text((0, 18), 'Total time required: ' + str(round(time.time() - time_start, 1)) + 'sec', (0,0,0), font=font)
     print('Time required: ' + str(round(time.time() - time_start, 1)) + 'sec')
 
-    if sp_count_tf == False:
-        draw.text((0, 36), 'Below', (0,0,0), font=font)
-        print('Below')
-    else:
-        draw.text((0, 36), 'Above', (0,0,0), font=font)
-        print('Above')
+    if sp_tf == True:
+        if sp_count_tf == False:
+            draw.text((0, 36), 'Below', (0,0,0), font=font)
+            print('Below')
+        else:
+            draw.text((0, 36), 'Above', (0,0,0), font=font)
+            print('Above')
 
-    draw.text((0, 54), 'Count: ' + str(sp_count), (0,0,0), font=font)
-    print('Count: ' + str(sp_count))
+        draw.text((0, 54), 'Count: ' + str(sp_count), (0,0,0), font=font)
+        print('Count: ' + str(sp_count))
 
-    draw.text((0, 72), 'sp_hand_diff: ' + str(sp_hand_diff), (0,0,0), font=font)
-    print('sp_hand_diff: ' + str(sp_hand_diff))
+        draw.text((0, 72), 'sp_hand_diff: ' + str(sp_hand_diff), (0,0,0), font=font)
+        print('sp_hand_diff: ' + str(sp_hand_diff))
 
-    draw.text((0, 90), 'sp_hand_diff_this: ' + str(sp_hand_diff_this), (0,0,0), font=font)
-    print('sp_hand_diff_this: ' + str(sp_hand_diff_this))
+        draw.text((0, 90), 'sp_hand_diff_this: ' + str(sp_hand_diff_this), (0,0,0), font=font)
+        print('sp_hand_diff_this: ' + str(sp_hand_diff_this))
 
-    if sp_hand_diff_tf == False:
-        draw.text((0, 108), 'sp_hand_diff ERROR', (255,0,0), font=font)
-        print('sp_hand_diff ERROR')
-    else:
-        draw.text((0, 108), 'sp_hand_diff GOOD', (0,255,0), font=font)
-        print('sp_hand_diff GOOD')
+        if sp_hand_diff_tf == False:
+            draw.text((0, 108), 'sp_hand_diff ERROR', (255,0,0), font=font)
+            print('sp_hand_diff ERROR')
+        else:
+            draw.text((0, 108), 'sp_hand_diff GOOD', (0,255,0), font=font)
+            print('sp_hand_diff GOOD')
 
-    draw.text((0, 126), 'sp_shoulder_diff: ' + str(sp_shoulder_diff), (0,0,0), font=font)
-    print('sp_shoulder_diff: ' + str(sp_shoulder_diff))
+        draw.text((0, 126), 'sp_shoulder_diff: ' + str(sp_shoulder_diff), (0,0,0), font=font)
+        print('sp_shoulder_diff: ' + str(sp_shoulder_diff))
 
-    draw.text((0, 144), 'sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min), (0,0,0), font=font)
-    print('sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min))
+        draw.text((0, 144), 'sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min), (0,0,0), font=font)
+        print('sp_shoulder_diff_min: ' + str(sp_shoulder_diff_min))
 
-    if sp_shoulder_diff_tf == False:
-        draw.text((0, 162), 'sp_shoulder_diff ERROR', (255,0,0), font=font)
-        print('sp_hand_diff ERROR')
-    else:
-        draw.text((0, 162), 'sp_shoulder_diff GOOD', (0,255,0), font=font)
-        print('sp_hand_diff GOOD')
+        if sp_shoulder_diff_tf == False:
+            draw.text((0, 162), 'sp_shoulder_diff ERROR', (255,0,0), font=font)
+            print('sp_hand_diff ERROR')
+        else:
+            draw.text((0, 162), 'sp_shoulder_diff GOOD', (0,255,0), font=font)
+            print('sp_hand_diff GOOD')
 
     image_img_numpy = np.asarray(image_img)
 

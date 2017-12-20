@@ -1,12 +1,11 @@
-<img src="/samples/Odin_squared.png" width="200">
-
-# Odin
-### People counting and classification in videos based on pose estimation
+# exercise-pose-analyzer
 
 ## Demo
-<img src="/samples/sample_results.gif" width="600">  
+<img src="/results/shoulder_press_1_pose.gif" width="250">  
 
-[Demo on YouTube](http://www.youtube.com/watch?v=5lSUhCjgD7g)
+[Demo on YouTube - 1](https://youtu.be/ylVMicajB6g)  
+[Demo on YouTube - 2](https://youtu.be/VPTsPYFE5Ho)  
+[Demo on YouTube - 3](https://youtu.be/vAUZd4LhdFU)  
 
 ## Usage
 
@@ -22,8 +21,8 @@ $ docker run -it --name odin jgravity/tensorflow-opencv:odin bin/bash
 
 #### Download/Install code
 ```
-# git clone https://github.com/PJunhyuk/people-counting-classification
-# cd people-counting-classification
+# git clone https://github.com/PJunhyuk/exercise-pose-analyzer
+# cd exercise-pose-analyzer
 # chmod u+x ./compile.sh && ./compile.sh && cd models/coco && chmod u+x download_models_wget.sh && ./download_models_wget.sh && cd -
 ```
 
@@ -32,28 +31,24 @@ $ docker run -it --name odin jgravity/tensorflow-opencv:odin bin/bash
 # cd testset && chmod u+x ./download_testset_wget.sh && ./download_testset_wget.sh && cd -
 ```
 
-#### Background removal
-```
-# python bg_removal.py -f '{video_file_name}'
-```
-> Default route is ```/people-counting-classification/testset```, and you have to drop ```testset/``` for ```{video_file_name}```
-
 #### Just get pose of people
 ```
 # python video_pose.py -f '{video_file_name}'
 ```
 > Qualified supporting video type: mov, mp4
 
-#### Tracking people
+#### Analyze shoulder press
 ```
-# python video_tracking.py -f '{video_file_name}'
+# python exercise_analyzer.py -f '{video_file_name}' -e 'sp'
 ```
-> Qualified supporting video type: mov, mp4
 
 ###### Arguments
 > -f, --videoFile = Path to Video File  
 > -w, --videoWidth = Width of Output Video  
 > -o, --videoType = Extension of Output Video
+> -e, --exerciseType = Type of Exersize  
+> - -e 'sp': shoulder press  
+> - -e 'dc': dumbbell curl  
 
 ## Dependencies
 
@@ -80,10 +75,6 @@ or install
 
 ## Reference
 
-### Test dataset
-- testset/test_video_01: [Pedestrian overpass - original video (sample) - BriefCam Syndex](https://www.youtube.com/watch?v=aUdKzb4LGJI)
-- testset/test_video_02: [Pedestrian Walking and Traffic Exit,Human Activity Recognition Video ,DataSet By UET Peshawar](https://www.youtube.com/watch?v=eZRLm7KK8HA)
-
 ### Citation
     @inproceedings{insafutdinov2017cvpr,
 	    title = {ArtTrack: Articulated Multi-person Tracking in the Wild},
@@ -101,4 +92,4 @@ or install
 
 ### Code
 [pose-tensorflow](https://github.com/eldar/pose-tensorflow) - Human Pose estimation with TensorFlow framework  
-[object-tracker](https://github.com/bikz05/object-tracker) - Object Tracker written in Python using dlib and OpenCV
+[people-counting-classification](https://github.com/PJunhyuk/people-counting-classification) - Odin: People counting and classification in videos based on pose estimation Edit
